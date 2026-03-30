@@ -18,8 +18,8 @@
 
 \fancypagestyle{protocol}{\fancyhf{}%
     \fancyhead[RO,LE] {Page \thepage ~of \pageref{LastPage}}%
-    \fancyhead[RE,LO] {Mike's Railroad Book}%
-       \fancyfoot[C]{\scriptsize Documentation and History of Railroad\\
+    \fancyhead[RE,LO] {Mikey's Railroad Book}%
+       \fancyfoot[C]{\scriptsize Documentation of Railroad\\
    Compilation Date: \today ~\\}
     \renewcommand \headrulewidth{.4pt}
     \renewcommand \footrulewidth{.4pt}}
@@ -44,7 +44,7 @@ urlcolor=blue,plainpages=false]{graphicx,hyperref}
 %%%% Front matter of the book
 \frontmatter
 \pagestyle{empty}
-\include{title}
+\include{title/title}
 
 \dominitoc
 \tableofcontents
@@ -55,27 +55,25 @@ urlcolor=blue,plainpages=false]{graphicx,hyperref}
 %%%% Main matter of the book
 \mainmatter
 \pagestyle{protocol}
-\part{Club Module}
-\include{chapters/module}
+\part{Wasatch N Scale Club}
+\include{wasatch_n_scale/module}
 
 
-\part{Initial 4 by 8 Basement Design}
-\include{chapters/testChapter}
-
-\part{Current Basement Designs}
-\include{chapters/testChapter}
+\part{Basement Layout}
+%\include{basement/basement}
+%\include{electrical/electrical}
+%\include{civil/civil}
+%\include{structures/structures}
+%\include{scenery/scenery}
 
 \part{JMRI Configuration Using GIT}
-\include{chapters/testChapter}
+%\include{git/git}
+%\include{jmri/jmri}
 
 \part{3D Printing}
-\include{chapters/3dPrinting}
+\include{3d_printing/3dPrinting}
 
-\part{Test Track}
-\include{chapters/testChapter}
 
-\part{Electronics}
-\include{chapters/testChapter}
 
 
 
