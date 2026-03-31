@@ -8,6 +8,97 @@
 
 %!TEX root = ../Railroad.tex
 
-\chapter{JMRI}
-%\minitoc
+\chapter{Java Model Railroad Interface}
+\minitoc
 %\index{test}
+\section{Introduction}
+The Java Model Railroad Interface (JMRI) is a Java program that has been under active development and support since October 1999;  the project
+is an open source project that by October 2024 had had over 10,000 updates from over 300 developers world wide.  It's components include software 
+for programming decoders, creating layouts, automating signaling, allowing automatic trains, and much much more.  I have been using JMRI for managing decoders,
+setting up current based occupancy detection, train control over Wifi, scripted running of trains using Jython, automating turnouts and routes, and creating meaningful signaling animation.  It can also be used to create switch lists for operations, and many other aspects of model railroading.  The main website is \url{https://www.jmri.org} and relevant software resources are maintained on GitHub at \url{https://github.com/JMRI}.
+
+This chapter is not intended as a tutorial or reference manual for JMRI.  It is a description of how I have configured JMRI for my own use.
+
+\section{Architecture Summary}
+The program has been designed to be easy for model railroaders to configure, relying heavily on the use of tables.  These tables contain objects such as 
+sensor, turnouts, lights, signal masts, etc. and users can configure the system directly with these tables.  When the computer is hooked up to the layout via a DCC system or other connection, manipulation of table values will physically affect the layout.  Thus, in the turnout table, if the user clicks on the button to throw the turnout, it will actually happen on the layout.  All the settings of JMRI are contained in an XML file that includes all parameters in the system as well as details
+about the layout.  It is also possible to save individual XML files for specific items such as turnouts, and this has been a historical source of user confusion.
+For our purposes, ALL settings are saved in a single XML file for each railroad layout.
+
+Why would we have more than one layout in JMRI?  An easy example is having a programming track;  if DecoderPro is used to manage the decoders of
+locomotives and this is accomplished on a programming track, we would like to save the roster settings somewhere where PanelPro can access the information when it is running the main layout.  In my case, I have four different JMRI layout configurations:
+\begin{compactitem}
+	\item{Basement Revised 2024}
+	\item{Decoder\_TestTrack}
+	\item{My\_NCE\_Simulator}
+	\item{Programming\_Track}
+\end{compactitem}
+
+My main layout is in the basement, and my programming track is attached to that layout.  The Decoder test track is a separate module that I constructed for
+automated speed matching of locomotives, and the NCE simulator is a completely fake layout that I can use to explore features of JMRI without a physical
+equivalent.
+
+After installation, the user can configure where the files are for his or her specific situation, and then when JMRI is updated, no changes have to be made.
+I have a JMRI folder in my home directory, and it's structure is shown in Figure \vref{fig:jmri-file-structure}.
+
+\begin{figure}[htbp]
+\begin{filetree}
+JMRI/
++-- Basement_Revised_2024.jmri/     Main layout profile
+|   +-- profile/
+|   |   +-- profile.xml             Connection config and startup actions
+|   |   +-- profile.properties      Preferences: roster path, web server
+|   |   +-- 5e82e5b0-.../           Machine-specific profile overrides
+|   |   |   +-- profile.xml
+|   |   |   +-- profile.properties
+|   |   |   +-- user-interface.xml
+|   |   +-- d2a3bcad-.../           Machine-specific profile overrides
+|   |       +-- profile.xml
+|   |       +-- profile.properties
+|   |       +-- user-interface.xml
+|   +-- March2026Settings.xml       Current panel/layout configuration
+|   +-- May2025Settings.xml         Previous panel versions
+|   +-- April2025Settings.xml
+|   +-- October2022Settings.xml
+|   +-- backupPanels/               Timestamped automatic backups
+|   +-- signal/
+|   |   +-- WarrantPreferences.xml
+|   +-- throttle/
+|   |   +-- ThrottlesPreferences.xml
+|   |   +-- WiThrottlePreferences.xml
+|   +-- programmers/                Custom decoder programmer configs
+|   +-- resources/                  Custom icons, images
+|   +-- roster.xml                  Profile-local roster reference
++-- Decoder_TestTrack.jmri/         Decoder calibration testing profile
++-- My_NCE_Simulator.jmri/         Simulation without hardware
++-- Programming_Track.jmri/         Programming track profile
++-- roster/                         Shared locomotive roster
++-- jython/                         Shared Jython scripts
++-- roster.xml                      Master roster index
++-- roster.csv                      CSV export of roster
+\end{filetree}
+\caption{JMRI directory structure}
+\label{fig:jmri-file-structure}
+\end{figure}
+
+Each \texttt{.jmri} profile directory follows the same structure shown above for \texttt{Basement\_Revised\_2024.jmri}.  The machine-specific UUID subdirectories under \texttt{profile/} allow different machines to have their own UI and connection preferences while sharing the same layout configuration.
+
+\section{Roster}
+The \texttt{roster/} directory is shared across all profiles.  Each profile points to it via \texttt{jmri-jmrit-roster.directory=home:JMRI/} in its \texttt{profile.properties}, so there is only one copy of each locomotive definition regardless of which profile is active.  The root-level \texttt{roster.xml} is the master index that JMRI uses to find individual locomotive files.
+
+Each locomotive has an XML file containing its DCC address, decoder CV settings, function labels, and other configuration.  Many also have a corresponding photo. (See Figure \vref{fig:roster-structure}.
+
+\begin{figure}[htbp]
+\begin{filetree}
+roster/
++-- consist/
+|   +-- consist.xml                 Consist definitions
++-- Big_Boy_4_8_8_4.xml             Locomotive definition - DCC/CV config
++-- BigBoySide.jpeg                 Corresponding photo
++-- 1029_NW2_Switcher.xml
++-- up1029.jpg
++-- ... (45+ locomotive XML files and 20+ photos)
+\end{filetree}
+\caption{Roster directory structure}
+\label{fig:roster-structure}
+\end{figure}

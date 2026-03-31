@@ -28,6 +28,24 @@
 \RequirePackage{amsfonts}
 \RequirePackage{supertabular}
 \RequirePackage{subcaption}
+\RequirePackage{graphicx}
+\RequirePackage{listings}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{listings}
+
+\newtcblisting{filetree}{%
+  colback=gray!8,
+  colframe=gray!40,
+  boxrule=0.4pt,
+  arc=2pt,
+  left=3mm,
+  right=3mm,
+  top=2mm,
+  bottom=2mm,
+  listing only,
+  listing options={basicstyle=\ttfamily\footnotesize, columns=fullflexible}
+}
+
 \RequirePackage{parskip}
 \setlength{\parindent}{1.5em}
 

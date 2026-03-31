@@ -1,0 +1,8 @@
+roster/
++-- consist/
+|   +-- consist.xml                 Consist definitions
++-- Big_Boy_4_8_8_4.xml             Locomotive definition - DCC/CV config
++-- BigBoySide.jpeg                 Corresponding photo
++-- 1029_NW2_Switcher.xml
++-- up1029.jpg
++-- ... (45+ locomotive XML files and 20+ photos)
